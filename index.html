@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+</head>
+
+<body>
+
+    <div class="container-fluid vh-100 d-flex justify-content-center">
+        <div class="row flex-grow-1">
+            <!-- Weather Section -->
+            <div id="result" style="background-color: rgb(115, 223, 223);"
+                class="col-md-8 d-flex flex-column justify-content-center align-items-center  text-white">
+                
+            </div>
+
+            <!-- Details Section -->
+            <div id="Details"
+                class="col-md-4 d-flex flex-column justify-content-center align-items-center bg-secondary text-white p-4">
+
+               
+                
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS (necessary for Bootstrap components) -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+
+
+    <script>
+        const result = document.getElementById('result')
+        fetch("https://api.openweathermap.org/data/2.5/weather?q=kakkanad&appid=8ac5c4d57ba6a4b3dfcf622700447b1e&units=metric").then(apiresponse=>apiresponse.json()).then(weather=>{
+            console.log(weather);
+            result.innerHTML=`
+            <h1 class="mb-4">WEATHER</h1>
+                <img src="http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png"
+                    alt="Hot Air Balloon" class="img-fluid mb-4" style="max-width: 350px;">
+                <h2 class="mb-2">temp: ${weather.main.temp}</h2>
+                <p class="mb-1">feels like ${weather.main.feels_like}°</p>
+                <p class="mb-4">${weather.name}</p>
+                <p class="mb-4">TimeZone: ${weather.timezone}(seconds offset)${weather.weather[0].description}</p>
+            
+            `
+            
+        }) .catch(reason => {
+            console.log(reason);
+        });
+    </script>
+
+    <script>
+        const Details=document.getElementById('Details')
+        fetch("https://api.openweathermap.org/data/2.5/weather?q=kakkanad&appid=8ac5c4d57ba6a4b3dfcf622700447b1e&units=metric")
+        .then(apiresponse=>apiresponse.json())
+        .then(weatherDetails=>{
+            console.log(weatherDetails);
+            Details.innerHTML=`
+
+             <input type="text" class="form-control" placeholder="london">
+                <button type="submit" class="btn btn-light">
+                    <i class="fas fa-search"></i>
+                </button>
+                <hr class="w-100 text-white">
+            <h5 class="text-uppercase mb-4">Weather Details</h5>
+                <p class="mb-2">Country: ${weatherDetails.sys.country}</p>
+                <p class="mb-2">Humidity: ${weatherDetails.main.humidity}%</p>
+                <p class="mb-2">Wind: ${weatherDetails.wind.speed}mph</p>
+                <p class="mb-2">Pressure: ${weatherDetails.main.pressure}</p>
+            `
+            
+        }).catch(reason=>{
+            console.log(reason);
+            
+        })
+    </script>
+</body>
+
+</html>
